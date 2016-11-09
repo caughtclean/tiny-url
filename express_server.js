@@ -1,17 +1,24 @@
 var express = require("express");
 var app = express();
-var PORT = process.env.PORT || 8080; // default port 8080
+var PORT = process.env.PORT || 8080;
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.set("view engine", "ejs")
+app.set("view engine", "ejs");
 
 var urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
-
-
 };
+
+function generateRandomString() {
+  let possible = "ABCDEFGHIJKLMOPQRSTUVWXYZ123456789abcdefghijklmnopqrstuvwxyz";
+  let random = "";
+  for (let i = 0; i < 6; i += 1) {
+    random += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return random;
+}
 
 
 app.get("/", (req, res) => {
@@ -28,12 +35,15 @@ app.get("/urls", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  // add the longURL to urlDatabase
+  var longURL = req.body.longURL;
+  if (!req.body.longURL.includes('://')) {
+    longURL = "http://" + req.body.longURL;
+  }
+
   var randomString = generateRandomString();
-  urlDatabase[randomString] = req.body.longURL;
-  console.log(randomString);
-  var shortURl = randomString
-  res.redirect('/urls/' + randomString)
+  urlDatabase[randomString] = longURL;
+  var shortURl = randomString;
+  res.redirect('/urls/' + randomString);
 
 });
 
@@ -53,7 +63,15 @@ app.get("/urls/:id", (req, res) => {
   let actualURL = urlDatabase[key];
   let templateVars = { shortURL: req.params.id, longURL: actualURL };
   res.render("urls_show", templateVars);
+
 });
+
+app.get("/u/:shortURL", (req, res) => {
+  let key = req.params.shortURL
+  let longURL = urlDatabase[key];
+  res.redirect(longURL);
+});
+
 
 app.get("/hello", (req, res) => {
   res.end("<html><body>Hello <b>World</b></body></html>\n");
@@ -63,12 +81,5 @@ app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
 
-function generateRandomString() {
-  let possible = "ABCDEFGHIJKLMOPQRSTUVWXYZ123456789abcdefghijklmnopqrstuvwxyz"
-  let random = ""
-  for (let i = 0; i < 6; i += 1) {
-    random += possible.charAt(Math.floor(Math.random() * possible.length));
-  };
-  return random
-};
-console.log(generateRandomString())
+
+console.log(generateRandomString());
