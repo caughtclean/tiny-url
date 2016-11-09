@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+<body>
+<p> List of URLs and Shortened versions</p>
+<ul>
+    <% for(var key in urls) { %>
+     <%let short = key%>
+     <%let long = urls[key]%>
+    <li><%= "URL:  " + long + "---" + "Shortened Version:  " + short %></li>
+    <%}; %>
+
+    </ul>
+
+    Click <a href="www.blank.com">HERE</a> to shortened your own URL!
+</html>
