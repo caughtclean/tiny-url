@@ -2,7 +2,7 @@ var express = require("express");
 var app = express();
 var PORT = process.env.PORT || 8080; // default port 8080
 const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set("view engine", "ejs")
 
@@ -27,14 +27,26 @@ app.get("/urls", (req, res) => {
   res.render('urls_index', templateVars);
 });
 
+app.post("/urls", (req, res) => {
+  // add the longURL to urlDatabase
+  var randomString = generateRandomString();
+  urlDatabase[randomString] = req.body.longURL;
+  console.log(randomString);
+  var shortURl = randomString
+  res.redirect('/urls/' + randomString)
+
+});
+
+app.get("/urls", (req, res) => {
+  let templateVars = { urls: urlDatabase };
+  res.render('urls_index', templateVars);
+});
+
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
-app.post("/urls", (req, res) => {
-  console.log(req.body);  // debug statement to see POST parameters
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
-});
+
 
 app.get("/urls/:id", (req, res) => {
   let key = req.params.id;
@@ -52,11 +64,11 @@ app.listen(PORT, () => {
 });
 
 function generateRandomString() {
-    let possible = "ABCDEFGHIJKLMOPQRSTUVWXYZ123456789abcdefghijklmnopqrstuvwxyz"
-    let random = ""
-    for (let i = 0; i < 6; i += 1) {
-      random += possible.charAt(Math.floor(Math.random() * possible.length));
-    };
-    return random
+  let possible = "ABCDEFGHIJKLMOPQRSTUVWXYZ123456789abcdefghijklmnopqrstuvwxyz"
+  let random = ""
+  for (let i = 0; i < 6; i += 1) {
+    random += possible.charAt(Math.floor(Math.random() * possible.length));
+  };
+  return random
 };
-    console.log(generateRandomString())
+console.log(generateRandomString())
