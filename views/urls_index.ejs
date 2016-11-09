@@ -12,10 +12,15 @@
     <% for(var key in urls) { %>
      <%let short = key%>
      <%let long = urls[key]%>
+
     <li><%= "URL:  " + long + "---" + "Shortened Version:  " + short %></li>
+
+    <form method="POST" action="/urls/<%= short %>/delete">
+        <input type="submit" value="DELETE URL"></input>
+
     <%}; %>
 
-    </ul>
 
-    Click <a href="http://localhost:8080/urls/new">HERE</a> to shortened your own URL!
+ <br> <br> <br>
+ Click <a href="http://localhost:8080/urls/new">HERE</a> to shortened your own URL!
 </html>
