@@ -51,7 +51,6 @@ app.post("/urls", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
- let templateVars = { urls: urlDatabase, username: req.cookies.username };
  let username = req.body.login
  res.cookie('username', username)
  res.redirect('/');
@@ -78,7 +77,7 @@ app.post("/urls/:id/delete", (req, res) => {
 
 app.get("/", (req, res) => {
   let templateVars = { urls: urlDatabase, username: req.cookies.username };
-  res.render("urls_new");
+  res.render("urls_new", templateVars);
 });
 
 
