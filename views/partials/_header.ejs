@@ -20,13 +20,19 @@
 
 
 
-
+        <% if (username == null) { %>
          <form action="/login" method="POST" style="margin: 10px;"></li>
       <label for="login">Enter Username:</label>
       <input id="username" type="text" name="username" placeholder="username" style="width: 200px">
       <input type="submit" value="Submit">
+ </form>
+ <% } else { %>
+ <form action="/logout" method="POST" style="margin: 10px;"></li>
+      <input type="submit" value="Log Out"> </form>
 
-    </form>
+
+ <% } %>
+
         </ul>
 
     </div>

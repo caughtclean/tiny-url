@@ -65,6 +65,12 @@ app.post("/login", (req, res) => {
  console.log(username)
 });
 
+app.post("/logout", (req, res) => {
+
+  res.clearCookie('username');
+  res.redirect('/');
+});
+
 app.post("/urls/:id/edit/", (req, res) => {
   var username = req.cookies.username
   var key = req.params.id;
