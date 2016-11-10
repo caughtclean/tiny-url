@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+}
+th {
+    text-align: right;
+}
+</style>
 <title>TinyApp</title>
 <% include ./partials/_head %>
 </head>
@@ -9,33 +21,38 @@
 </header>
 <body>
 
-                      <p><b>List of URLs and Shortened versions</p>
+                      <h2>List of URLs and Shortened versions</h2>
 <ul>
     <% for(var key in urls) { %>
      <%let short = key%>
      <%let long = urls[key]%>
+<style>
+ table { width: 100%; }
+  td.colA { width: 60%; }
+  td.colB { width: 40%; }
+</style>
 
-<table class="table">
-    <tr>
-      <th>Original URL</th>
-      <th>Shortened URL</th>
-    </tr>
-
-    <tr>
-      <td> <%= long %> </td>
-
-      <td> <%= short %> </td>
-
-    </tr>
-
-  </table>
+<table class="table table-bordered table-striped table-hover">
+<col align="left">
+  <col align="left">
+  <col align="right">
 
 
-    <form method="POST" action="/urls/<%= short %>/delete">
-        <input type="submit" value="DELETE URL"></input></form>
 
-         <form method="GET" action="/urls/<%= short %>">
-        <input type="submit" value="Edit"></input></form>
+  <tr>
+   <td class="colA"><b>Original URL:</b> <%= long %><form method="POST" action="/urls/<%= short %>/delete">
+        <input type="submit" value="DELETE URL"></input><span class="glyphicon glyphicon-erase"></span></form></td>
+   <td class="colB"><b>Shortened URL:</b> <%= short %><form method="GET" action="/urls/<%= short %>">
+        <input type="submit" value="Edit"></input><span class="glyphicon glyphicon-wrench"></span></form></</td>
+   
+</table>
+
+
+
+
+
+
+
 
     <%}; %>
 

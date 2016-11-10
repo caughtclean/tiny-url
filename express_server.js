@@ -5,6 +5,14 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 var cookieParser = require('cookie-parser')
 app.use(cookieParser())
+var cookieSession = require('cookie-session')
+
+
+
+app.use(cookieSession({
+  name: 'session',
+  keys: ['supersecret', 'supersecret2']
+}))
 
 
 app.set("view engine", "ejs");
@@ -51,9 +59,10 @@ app.post("/urls", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
- let username = req.body.login
+ let username = req.body.username
  res.cookie('username', username)
  res.redirect('/');
+ console.log(username)
 });
 
 app.post("/urls/:id/edit/", (req, res) => {
