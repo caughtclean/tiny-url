@@ -2,18 +2,39 @@
 <html lang="en">
 <head>
 <title>TinyApp</title>
+<% include ./partials/_head %>
 </head>
 <header>
 <% include ./partials/_header %>
 </header>
 <body>
+<div class="container">
+  <table class="table">
+    <tr>
+      <th>Original URL</th>
+      <th>Shortened URL</th>
+    </tr>
 
-<p>Original URL: </p>
-<%= longURL %>
+    <tr>
+      <td> <%= longURL %> </td>
+
+      <td> <%= shortURL %> </td>
+
+    </tr>
+
+  </table>
 
 
-<p>Shortened URL: </p>
-  <%= shortURL %>
+<form action="/urls/<%= shortURL %>/edit/" method="POST" style="margin: 100px;">
+      <label for="longURL"></label>
+      <input id="longURL" type="text" name="longURL" value=" <%= longURL %> " style="width: 600px">
+      <input type="submit" value="Update">
+    </form>
 
+
+ <footer>
+  <% include ./partials/_footer %>
+  </footer>
 
 </html>
+</div>

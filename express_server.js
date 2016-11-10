@@ -47,6 +47,16 @@ app.post("/urls", (req, res) => {
 
 });
 
+app.post("/urls/:id/edit/", (req, res) => {
+  var key = req.params.id;
+  var newUrl = req.body.longURL
+  console.log(urlDatabase[req.params.id]);
+  urlDatabase[req.params.id] = req.body.longURL
+  //console.log(req.params.id)
+  res.redirect('/urls')
+
+});
+
 app.post("/urls/:id/delete", (req, res) => {
   delete urlDatabase[req.params.id]
   console.log(req.params.id)
