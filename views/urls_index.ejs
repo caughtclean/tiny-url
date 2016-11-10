@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<b> Logged in as : <%= username %> </b>
 <head>
 <title>TinyApp</title>
 <% include ./partials/_head %>
@@ -8,6 +9,7 @@
 <% include ./partials/_header %>
 </header>
 <body>
+
                       <p><b>List of URLs and Shortened versions</p>
 <ul>
     <% for(var key in urls) { %>
