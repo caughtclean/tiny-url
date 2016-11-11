@@ -6,7 +6,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var cookieParser = require('cookie-parser')
 app.use(cookieParser())
 var cookieSession = require('cookie-session')
+const users = {"userRandomID": {id: "userRandomID", email: "user@example.com", password: "password"},
+"user2RandomID": {id: "user2RandomID", email: "user2@example.com", password: "password"}
+}
 
+var urlDatabase = {
+  "b2xVn2": "http://www.lighthouselabs.ca",
+  "9sm5xK": "http://www.google.com"
+};
 
 
 app.use(cookieSession({
@@ -17,10 +24,8 @@ app.use(cookieSession({
 
 app.set("view engine", "ejs");
 
-var urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
-};
+
+
 
 function generateRandomString() {
   let possible = "ABCDEFGHIJKLMOPQRSTUVWXYZ123456789abcdefghijklmnopqrstuvwxyz";
@@ -105,6 +110,24 @@ app.get("/urls/:id", (req, res) => {
 
 });
 
+app.get("/register", (req, res) => {
+  let templateVars = { urls: urlDatabase, username: req.cookies.username };
+  res.render("register",templateVars)
+
+});
+
+app.post("/register", (req, res) => {
+  let templateVars = { urls: urlDatabase, username: req.cookies.username };
+  let email = req.body.email
+  let password = req.body.password
+  let userRandomID = generateRandomString()
+  users[userRandomID] = {id: userRandomID, email, password}
+  console.log(users)
+  res.redirect("/")
+});
+
+
+
 app.get("/u/:shortURL", (req, res) => {
   let templateVars = { urls: urlDatabase, username: req.cookies.username };
   let key = req.params.shortURL
@@ -122,5 +145,5 @@ app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
 
-
+console.log(users)
 console.log(generateRandomString());

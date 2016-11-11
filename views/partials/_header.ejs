@@ -9,7 +9,12 @@
                 TINYAPP™
                 <span class="glyphicon glyphicon-scissors"></span>
             </a>
-            <b> Logged in as : <%= username %> </b>
+            <% if (username == null) { %>
+                <b> Not Logged In </b>
+           <% } else { %>
+          <b> Logged in as : <%= username %> </b>
+           <% } %>
+
         </div>
 
         <ul class="nav navbar-nav">
@@ -18,12 +23,12 @@
             <li><a href="/about">About</a></li>
 
 
-
+ </div>
 
         <% if (username == null) { %>
-         <form action="/login" method="POST" style="margin: 10px;"></li>
+         <form action="/login" method="POST" style="margin: 0px;"></li>
       <label for="login">Enter Username:</label>
-      <input id="username" type="text" name="username" placeholder="username" style="width: 200px">
+      <input id="username" type="text" name="username" placeholder="username" style="width: 100px; margin-left:30px">
       <input type="submit" value="Submit">
  </form>
  <% } else { %>
@@ -35,5 +40,5 @@
 
         </ul>
 
-    </div>
+
 </nav>
