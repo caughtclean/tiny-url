@@ -1,4 +1,6 @@
 <!-- views/partials/header.ejs -->
+<!DOCTYPE html>
+<html lang="en">
 
 <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
@@ -12,7 +14,7 @@
             <% if (userid == null) { %>
                 <a href="http://localhost:8080/register">Register</a><a href="http://localhost:8080/login">/Log in</a>
            <% } else { %>
-          <b> Logged in as : <%= email %> </b>
+          <b> Logged in as : <%= email  %> </b>
            <% } %>
 
         </div>
@@ -25,6 +27,18 @@
 
  </div>
 
+        <% if (userid == null) { %>
+         <form action="/login" method="POST" style="margin: 0px;"></li>
+      <label for="login">Enter Userid:</label>
+      <input id="userid" type="text" name="userid" placeholder="userid" style="width: 100px; margin-left:30px">
+      <input type="submit" value="Submit">
+ </form>
+ <% } else { %>
+ <form action="/logout" method="POST" style="margin: 10px;"></li>
+      <input type="submit" value="Log Out"> </form>
+
+
+ <% } %>
 
         </ul>
 

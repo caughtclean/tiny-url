@@ -49,6 +49,11 @@ app.get("/urls", (req, res) => {
   res.render('urls_index', templateVars);
 });
 
+app.get("/new", (req, res) => {
+  let templateVars = { urls: urlDatabase, userid: req.cookies.userid,email: useremail};
+  res.render('urls_new', templateVars);
+});
+
 app.post("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase, userid: req.cookies.userid};
   var longURL = req.body.longURL;
@@ -90,7 +95,7 @@ app.post("/urls/:id/delete", (req, res) => {
 
 app.get("/", (req, res) => {
   let templateVars = { urls: urlDatabase, userid: req.cookies.userid, email: useremail};
-  res.render("urls_new", templateVars);
+  res.render("home", templateVars);
 });
 
 
@@ -147,25 +152,26 @@ app.post("/login", (req, res) => {
   let password = req.body.password;
 
   for (var userKey in users) {
-    if (email != users[userKey].email) {
-      res.status(403);
-      res.send('Incorrect User Name');
-      return;
-    } if (password != users[userKey].password) {
-      res.status(403);
-      res.send('Incorrect Password')
-      return
-    }
-
+    if (email === users[userKey].email && password === users[userKey].password) {
     res.cookie("userid", userKey)
     useremail = email
-
     res.redirect("/")
+    return
+    }
+    if (password != users[userKey].password) {
+      res.status(403);
+      res.send('Incorrect Username Or Password')
     }
 
+    // else {
+    // (password != users[userKey].password)
+    //   res.status(403);
+    //   res.send('Incorrect Password')
+    //   return
+    // }
+  }
+
   });
-
-
 
 
 
