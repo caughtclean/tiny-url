@@ -9,10 +9,10 @@
                 TINYAPP™
                 <span class="glyphicon glyphicon-scissors"></span>
             </a>
-            <% if (username == null) { %>
-                <b> Not Logged In </b>
+            <% if (userid == null) { %>
+                <a href="http://localhost:8080/register">Register</a><a href="http://localhost:8080/login">/Log in</a>
            <% } else { %>
-          <b> Logged in as : <%= username %> </b>
+          <b> Logged in as : <%= email %> </b>
            <% } %>
 
         </div>
@@ -25,18 +25,6 @@
 
  </div>
 
-        <% if (username == null) { %>
-         <form action="/login" method="POST" style="margin: 0px;"></li>
-      <label for="login">Enter Username:</label>
-      <input id="username" type="text" name="username" placeholder="username" style="width: 100px; margin-left:30px">
-      <input type="submit" value="Submit">
- </form>
- <% } else { %>
- <form action="/logout" method="POST" style="margin: 10px;"></li>
-      <input type="submit" value="Log Out"> </form>
-
-
- <% } %>
 
         </ul>
 
