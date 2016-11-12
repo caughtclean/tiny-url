@@ -6,41 +6,35 @@
     <div class="container-fluid">
 
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="http://localhost:8080/">
                 <span class="glyphicon glyphicon-scissors"></span>
                 TINYAPP™
                 <span class="glyphicon glyphicon-scissors"></span>
-            </a>
-            <% if (userid == null) { %>
-                <a href="http://localhost:8080/register">Register</a><a href="http://localhost:8080/login">/Log in</a>
-           <% } else { %>
-          <b> Logged in as : <%= email  %> </b>
-           <% } %>
 
         </div>
 
         <ul class="nav navbar-nav">
             <li><a href="http://localhost:8080/">Home</a></li>
             <li><a href="http://localhost:8080/urls/"> URL List</a></li>
-            <li><a href="/about">About</a></li>
+            <li></a>
+
+            <% if (userid == null) { %>
+                <a href="http://localhost:8080/register">Register</a><a href="http://localhost:8080/login">/Log in</a>
+           <% } else { %>
+          <b> Logged in as : <%= email  %> </b>
+
+          <form action="/logout" method="POST" style="margin: 10px;"></li>
+      <input type="submit" value="Log Out"> </form>
+      </li>
+           <% } %>
+
+
+
+
 
 
  </div>
 
-        <% if (userid == null) { %>
-         <form action="/login" method="POST" style="margin: 0px;"></li>
-      <label for="login">Enter Userid:</label>
-      <input id="userid" type="text" name="userid" placeholder="userid" style="width: 100px; margin-left:30px">
-      <input type="submit" value="Submit">
- </form>
- <% } else { %>
- <form action="/logout" method="POST" style="margin: 10px;"></li>
-      <input type="submit" value="Log Out"> </form>
-
-
- <% } %>
-
-        </ul>
 
 
 </nav>
