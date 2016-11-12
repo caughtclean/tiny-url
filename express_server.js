@@ -94,7 +94,6 @@ app.post("/urls", (req, res) => {
   if (!req.body.longURL.includes('://')) {
     longURL = "http://" + req.body.longURL;
   }
-  var longURL = req.body.longURL;
   var shortURL = generateRandomString();
   if (!urlDatabase[req.cookies.userid]) {
     urlDatabase[req.cookies.userid] = {"urls": {} };
@@ -104,7 +103,6 @@ app.post("/urls", (req, res) => {
   res.redirect('/urls/' + shortURL);
 
 });
-
 
 app.post("/logout", (req, res) => {
 
@@ -163,9 +161,14 @@ app.get("/urls/:id", (req, res) => {
   let key = req.params.id;
   let longURL = urlDatabase[req.cookies.userid].urls[key]
 
+
   let templateVars = { shortURL: req.params.id, longURL: longURL, urls: urlDatabase, userid: req.cookies.userid,email: useremail};
   res.render("urls_show", templateVars);
 
+});
+
+app.get("/id:", (req, res) => {
+  res.redirect(www.example.com)
 });
 
 app.get("/register", (req, res) => {
@@ -237,10 +240,10 @@ app.post("/login", (req, res) => {
 
 
 
-app.get("/u/:shortURL", (req, res) => {
-  let templateVars = { urls: urlDatabase, userid: req.cookies.userid,email: useremail };
-  let key = req.params.shortURL
-  let longURL = urlDatabase[key];
+app.get("/u/:id", (req, res) => {
+  let key = req.params.id;
+  let longURL = urlDatabase[req.cookies.userid].urls[key]
+  let templateVars = { shortURL: req.params.id, longURL: longURL, urls: urlDatabase, userid: req.cookies.userid,email: useremail};
   res.redirect(longURL);
 });
 
