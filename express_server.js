@@ -59,6 +59,13 @@ app.get("/urls.json", (req, res) => {
 
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase, userid: req.cookies.userid, email: useremail};
+  let key = req.params.id;
+  let longURL = urlDatabase[req.cookies.userid].urls[key]
+
+  if (!req.cookies.userid) {
+    res.redirect('/login')
+    return
+  }
   res.render('urls_index', templateVars);
 });
 
@@ -110,15 +117,24 @@ app.post("/urls/:id/edit/", (req, res) => {
   var key = req.params.id;
   var newUrl = req.body.longURL
   console.log(urlDatabase[req.params.id]);
-  urlDatabase[req.params.id] = req.body.longURL
+  urlDatabase[req.cookies.userid].urls[req.params.id] = req.body.longURL
+  if (!req.cookies.userid) {
+    res.redirect('/login')
+    return
+  }
   res.redirect('/urls')
 
 });
 
 app.post("/urls/:id/delete", (req, res) => {
   let templateVars = { urls: urlDatabase, userid: req.cookies.userid,email: useremail};
-  delete urlDatabase[req.params.id]
+  if (!req.cookies.userid) {
+    res.redirect('/login')
+    return
+  }
+  delete urlDatabase[req.cookies.userid].urls[req.params.id]
   console.log(req.params.id)
+
   res.redirect('/urls')
 
 });

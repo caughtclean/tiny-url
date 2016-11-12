@@ -23,9 +23,9 @@ th {
 
                       <h2>List of URLs and Shortened versions</h2>
 <ul>
-    <% for(var key in urls) { %>
+    <% for(var key in urls[userid].urls) { %>
      <%let short = key%>
-     <%let long = urls[key]%>
+     <%let long = urls[userid].urls[key]%>
 <style>
  table { width: 100%; }
   td.colA { width: 60%; }
