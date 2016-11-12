@@ -10,6 +10,21 @@ const users = {a46mAH: { id: 'a46mAH', email: 'test@gmail.com', password: '123' 
 var useremail = ""
 var urlDatabase = {
 
+  "dh67nw":
+  {
+    "urls": {
+      "f5jdn2": "www.example.com",
+      "dh2ns1": "www.example2.com"
+    }
+  },
+  "xxks2f": {
+    "urls": {
+      "wwwwww": "www.example3.com",
+      "xxxxxx": "www.example4.com"
+    }
+  }
+
+
 };
 
 
@@ -57,18 +72,29 @@ app.get("/new", (req, res) => {
   res.render('urls_new', templateVars)
 });
 
+
+// "dh67nw":
+//   {
+//     "urls": {
+//       "f5jdn2": "www.example.com",
+//       "dh2ns1": "www.example2.com"
+//     }
+//   }
+
 app.post("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase, userid: req.cookies.userid};
   var longURL = req.body.longURL;
   if (!req.body.longURL.includes('://')) {
     longURL = "http://" + req.body.longURL;
   }
-var longURL = req.body.longURL;
-  var randomString = generateRandomString();
-  urlDatabase[req.cookies.userid] = longURL + randomString;
-  var shortURl = randomString;
-  console.log(urlDatabase)
-  res.redirect('/urls/' + shortURl);
+  var longURL = req.body.longURL;
+  var shortURL = generateRandomString();
+  if (!urlDatabase[req.cookies.userid]) {
+    urlDatabase[req.cookies.userid] = {"urls": {} };
+  }
+  urlDatabase[req.cookies.userid].urls[shortURL] = longURL;
+  console.log(urlDatabase);
+  res.redirect('/urls/' + shortURL);
 
 });
 
@@ -119,8 +145,9 @@ app.get("/", (req, res) => {
 
 app.get("/urls/:id", (req, res) => {
   let key = req.params.id;
-  let actualURL = urlDatabase[req.cookies.userid].key
-  let templateVars = { shortURL: req.params.id, longURL: actualURL, urls: urlDatabase, userid: req.cookies.userid,email: useremail};
+  let longURL = urlDatabase[req.cookies.userid].urls[key]
+
+  let templateVars = { shortURL: req.params.id, longURL: longURL, urls: urlDatabase, userid: req.cookies.userid,email: useremail};
   res.render("urls_show", templateVars);
 
 });
