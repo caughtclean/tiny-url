@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 var cookieParser = require('cookie-parser')
 app.use(cookieParser())
+const bcrypt = require('bcrypt');
+const password = "purple-monkey-dinosaur";
+const hashed_password = bcrypt.hashSync(password, 10);
 var cookieSession = require('cookie-session')
 const users = {a46mAH: { id: 'a46mAH', email: 'test@gmail.com', password: '123' }}
 var useremail = ""
@@ -58,7 +61,12 @@ app.get("/urls.json", (req, res) => {
 
 
 app.get("/urls", (req, res) => {
+
   let templateVars = { urls: urlDatabase, userid: req.cookies.userid, email: useremail};
+  var email = '';
+  if (req.cookies.userid) {
+    email = users[req.cookies.userid].email;
+  }
   let key = req.params.id;
   let longURL = urlDatabase[req.cookies.userid].urls[key]
 
@@ -70,7 +78,9 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/new", (req, res) => {
+  var email = '';
   let templateVars = { urls: urlDatabase, userid: req.cookies.userid, email: useremail};
+  email = users[req.cookies.userid].email;
   if (!req.cookies.userid) {
     res.redirect('/login')
     return
@@ -89,7 +99,8 @@ app.get("/new", (req, res) => {
 //   }
 
 app.post("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase, userid: req.cookies.userid};
+  var email = '';
+  email = users[req.cookies.userid].email;
   var longURL = req.body.longURL;
   if (!req.body.longURL.includes('://')) {
     longURL = "http://" + req.body.longURL;
@@ -111,6 +122,8 @@ app.post("/logout", (req, res) => {
 });
 
 app.post("/urls/:id/edit/", (req, res) => {
+  var email = '';
+  email = users[req.cookies.userid].email;
   let templateVars = { urls: urlDatabase, userid: req.cookies.userid,email: useremail };
   var key = req.params.id;
   var newUrl = req.body.longURL
@@ -158,6 +171,8 @@ app.get("/", (req, res) => {
 
 
 app.get("/urls/:id", (req, res) => {
+  var email = '';
+  email = users[req.cookies.userid].email;
   let key = req.params.id;
   let longURL = urlDatabase[req.cookies.userid].urls[key]
 
@@ -174,14 +189,19 @@ app.get("/id:", (req, res) => {
 app.get("/register", (req, res) => {
   let templateVars = { urls: urlDatabase, userid: req.cookies.userid,email: useremail };
   res.render("register",templateVars)
+  if (!req.cookies.userid) {
+    res.redirect('/login')
+    return
+  }
 
 });
 
 app.post("/register", (req, res) => {
   let templateVars = { urls: urlDatabase, userid: req.cookies.userid,email: useremail };
   let email = req.body.email;
-  let password = req.body.password;
+  let password = hashed_password
   let userRandomID = generateRandomString();
+
 
 
   for (var userKey in users) {
@@ -216,13 +236,12 @@ app.post("/login", (req, res) => {
   let password = req.body.password;
 
   for (var userKey in users) {
-    if (email === users[userKey].email && password === users[userKey].password) {
+    if (email === users[userKey].email && bcrypt.compareSync("purple-monkey-dinosaur", hashed_password)) {
     res.cookie("userid", userKey)
-    useremail = email
     res.redirect("/")
     return
     }
-    if (password != users[userKey].password) {
+    if (bcrypt.compareSync("pink-donkey-minotaur", hashed_password)) {
       res.status(403);
       res.send('Incorrect Username Or Password')
     }
@@ -241,6 +260,8 @@ app.post("/login", (req, res) => {
 
 
 app.get("/u/:id", (req, res) => {
+  var email = '';
+  email = users[req.cookies.userid].email;
   let key = req.params.id;
   let longURL = urlDatabase[req.cookies.userid].urls[key]
   let templateVars = { shortURL: req.params.id, longURL: longURL, urls: urlDatabase, userid: req.cookies.userid,email: useremail};
