@@ -17,15 +17,17 @@
             <li><a href="http://localhost:8080/">Home</a></li>
             <li><a href="http://localhost:8080/urls/"> My Links</a></li>
             <li></a>
+            <font-size: 5px;>
 
-            <% if (userid == null) { %>
-                <a href="http://localhost:8080/register">Register</a><a href="http://localhost:8080/login">/Log in</a>
-           <% } else { %>
-          <b> Logged in as : <%= email  %> </b>
+            <% if (email) { %>
+            <b> Logged in as : <%= email  %> </b>
 
           <form action="/logout" method="POST" style="margin: 10px;"></li>
       <input type="submit" value="Log Out"> </form>
       </li>
+           <% } else { %>
+
+                <a href="http://localhost:8080/register">Register</a><a href="http://localhost:8080/login">/Log in</a>
            <% } %>
 
 
