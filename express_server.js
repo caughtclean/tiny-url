@@ -62,10 +62,11 @@ app.get("/urls.json", (req, res) => {
 
 app.get("/urls", (req, res) => {
 
-  let templateVars = { urls: urlDatabase, userid: req.cookies.userid, email: useremail};
-  var email = '';
-  if (req.cookies.userid) {
-    email = users[req.cookies.userid].email;
+  var email = users[req.cookies.userid].email;
+  let templateVars = { urls: urlDatabase, userid: req.cookies.userid, email: email};
+  if (!req.cookies.userid) {
+    res.redirect('/login')
+    return
   }
   let key = req.params.id;
   let longURL = urlDatabase[req.cookies.userid].urls[key]
@@ -78,9 +79,8 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/new", (req, res) => {
-  var email = '';
-  let templateVars = { urls: urlDatabase, userid: req.cookies.userid, email: useremail};
-  email = users[req.cookies.userid].email;
+  var email = users[req.cookies.userid].email;
+  let templateVars = { urls: urlDatabase, userid: req.cookies.userid, email: email};
   if (!req.cookies.userid) {
     res.redirect('/login')
     return
@@ -171,13 +171,17 @@ app.get("/", (req, res) => {
 
 
 app.get("/urls/:id", (req, res) => {
-  var email = '';
-  email = users[req.cookies.userid].email;
+  var email = users[req.cookies.userid].email;
+  if (!req.cookies.userid) {
+    res.redirect('/login')
+    return
+  }
+
   let key = req.params.id;
   let longURL = urlDatabase[req.cookies.userid].urls[key]
 
 
-  let templateVars = { shortURL: req.params.id, longURL: longURL, urls: urlDatabase, userid: req.cookies.userid,email: useremail};
+  let templateVars = { shortURL: req.params.id, longURL: longURL, urls: urlDatabase, userid: req.cookies.userid,email: email};
   res.render("urls_show", templateVars);
 
 });
@@ -199,10 +203,8 @@ app.get("/register", (req, res) => {
 app.post("/register", (req, res) => {
   let templateVars = { urls: urlDatabase, userid: req.cookies.userid,email: useremail };
   let email = req.body.email;
-  let password = bcrypt.hashSync(req.body.password, 10);
+  let password = req.body.password;
   let userRandomID = generateRandomString();
-
-
 
   for (var userKey in users) {
     if (email === users[userKey].email) {
@@ -214,15 +216,10 @@ app.post("/register", (req, res) => {
       res.send("Missing email or password field");
       return;
     }
-
   }
 
- users[userRandomID] = {id: userRandomID, email: email, password: bcrypt.hashSync(password, 10)}
-   res.cookie("userid", userRandomID )
+  users[userRandomID] = {id: userRandomID, email: email, password: bcrypt.hashSync(password, 10)}
   res.cookie("userid", userRandomID )
-  //
-
-  console.log(users)
   res.redirect("/")
 });
 
