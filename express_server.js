@@ -16,14 +16,14 @@ var urlDatabase = {
   "dh67nw":
   {
     "urls": {
-      "f5jdn2": "www.example.com",
-      "dh2ns1": "www.example2.com"
+      "f5jdn2": "http://www.example.com",
+      "dh2ns1": "http://www.example2.com"
     }
   },
   "xxks2f": {
     "urls": {
-      "wwwwww": "www.example3.com",
-      "xxxxxx": "www.example4.com"
+      "wwwwww": "http://www.example3.com",
+      "xxxxxx": "http://www.example4.com"
     }
   }
 
@@ -182,10 +182,6 @@ app.get("/urls/:id", (req, res) => {
 
 });
 
-app.get("/id:", (req, res) => {
-  res.redirect(www.example.com)
-});
-
 app.get("/register", (req, res) => {
   let templateVars = { urls: urlDatabase, userid: req.cookies.userid,email: useremail };
   res.render("register",templateVars)
@@ -252,12 +248,23 @@ app.post("/login", (req, res) => {
 
 
 app.get("/u/:id", (req, res) => {
-  var email = '';
-  email = users[req.cookies.userid].email;
-  let key = req.params.id;
-  let longURL = urlDatabase[req.cookies.userid].urls[key]
-  let templateVars = { shortURL: req.params.id, longURL: longURL, urls: urlDatabase, userid: req.cookies.userid,email: useremail};
-  res.redirect(longURL);
+  let longURL = '';
+  console.log(urlDatabase)
+  for(let user in urlDatabase) {
+    for(let shortURL in urlDatabase[user].urls) {
+      console.log(shortURL)
+      if(shortURL === req.params.id) {
+        longURL = urlDatabase[user].urls[shortURL];
+      }
+
+    }
+  }
+  if(longURL) {
+        res.redirect(longURL);
+      } else {
+        res.sendStatus(404);
+      }
+      return
 });
 
 
