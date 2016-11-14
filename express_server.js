@@ -61,20 +61,16 @@ app.get("/urls.json", (req, res) => {
 
 
 app.get("/urls", (req, res) => {
-
-  var email = users[req.cookies.userid].email;
-  let templateVars = { urls: urlDatabase, userid: req.cookies.userid, email: email};
   if (!req.cookies.userid) {
     res.redirect('/login')
     return
   }
+
+  var email = users[req.cookies.userid].email;
+  let templateVars = { urls: urlDatabase, userid: req.cookies.userid, email: email}
   let key = req.params.id;
   let longURL = urlDatabase[req.cookies.userid].urls[key]
 
-  if (!req.cookies.userid) {
-    res.redirect('/login')
-    return
-  }
   res.render('urls_index', templateVars);
 });
 
