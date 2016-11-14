@@ -9,7 +9,7 @@ const bcrypt = require('bcrypt');
 const password = "purple-monkey-dinosaur";
 const hashed_password = bcrypt.hashSync(password, 10);
 var cookieSession = require('cookie-session')
-const users = {a46mAH: { id: 'a46mAH', email: 'test@gmail.com', password: '123' }}
+const users = {}
 var useremail = ""
 var urlDatabase = {
 
@@ -236,15 +236,16 @@ app.post("/login", (req, res) => {
   let password = req.body.password;
 
   for (var userKey in users) {
-    if (email === users[userKey].email && bcrypt.compareSync("purple-monkey-dinosaur", hashed_password)) {
-    res.cookie("userid", userKey)
-    res.redirect("/")
-    return
+    if (email === users[userKey].email && bcrypt.compareSync(password, users[userKey].password)) {
+      res.cookie("userid", userKey)
+      res.redirect("/")
+      return
     }
-    if (bcrypt.compareSync("pink-donkey-minotaur", hashed_password)) {
-      res.status(403);
-      res.send('Incorrect Username Or Password')
-    }
+  }
+
+  res.status(403);
+  res.send('Incorrect Username Or Password')
+});
 
     // else {
     // (password != users[userKey].password)
@@ -252,9 +253,6 @@ app.post("/login", (req, res) => {
     //   res.send('Incorrect Password')
     //   return
     // }
-  }
-
-  });
 
 
 
