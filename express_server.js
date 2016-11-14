@@ -199,7 +199,7 @@ app.get("/register", (req, res) => {
 app.post("/register", (req, res) => {
   let templateVars = { urls: urlDatabase, userid: req.cookies.userid,email: useremail };
   let email = req.body.email;
-  let password = hashed_password
+  let password = bcrypt.hashSync(req.body.password, 10);
   let userRandomID = generateRandomString();
 
 
@@ -217,7 +217,8 @@ app.post("/register", (req, res) => {
 
   }
 
-  users[userRandomID] = {id: userRandomID, email: email, password: password}
+ users[userRandomID] = {id: userRandomID, email: email, password: bcrypt.hashSync(password, 10)}
+   res.cookie("userid", userRandomID )
   res.cookie("userid", userRandomID )
   //
 
