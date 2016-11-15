@@ -3,40 +3,36 @@
 <html lang="en">
 
 <nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
+  <div class="container-fluid">
 
-        <div class="navbar-header">
-            <a class="navbar-brand" href="http://localhost:8080/">
-                <span class="glyphicon glyphicon-scissors"></span>
-                TINYAPP™
-                <span class="glyphicon glyphicon-scissors"></span>
+    <div class="navbar-header">
+      <a class="navbar-brand" href="http://localhost:8080/">
+        <span class="glyphicon glyphicon-scissors">
+        </span>
+        TINYAPP™
+        <span class="glyphicon glyphicon-scissors">
+        </span>
+      </a>
+    </div>
 
-        </div>
-
-        <ul class="nav navbar-nav">
-            <li><a href="http://localhost:8080/">Home</a></li>
-            <li><a href="http://localhost:8080/urls/"> My Links</a></li>
-            <li></a>
-            <font-size: 5px;>
-
-            <% if (email) { %>
-            <b> Logged in as : <%= email  %> </b>
-
-          <form action="/logout" method="POST" style="margin: 10px;"></li>
-      <input type="submit" value="Log Out"> </form>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="http://localhost:8080/">Home</a>
       </li>
-           <% } else { %>
+      <li>
+        <a href="http://localhost:8080/urls/">My Links</a>
+      </li>
+      <li class="login">
+        <% if (email) { %>
+          Logged in as : <%= email  %>
+          <form class="logout" action="/logout" method="POST">
+            <input type="submit" value="Log Out">
+          </form>
+        <% } else { %>
+          <a href="http://localhost:8080/register">Register</a><a href="http://localhost:8080/login">/Log in</a>
+        <% } %>
+      </li>
+    </ul>
 
-                <a href="http://localhost:8080/register">Register</a><a href="http://localhost:8080/login">/Log in</a>
-           <% } %>
-
-
-
-
-
-
- </div>
-
-
-
-</nav>
+  </div>
+</nav> <!-- .navbar -->
